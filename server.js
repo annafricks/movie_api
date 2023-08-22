@@ -2,22 +2,20 @@ const http = require('http');
 const fs = require('fs');
 const url = require('url');
 
-http.createServer((request,response) => {
-    let url = new URL (request.url, 'http://$request.headers.host/');
+http.createServer((request, response) => {
+    let parsedUrl = new URL(request.url, `http://${request.headers.host}`);
 
-    filePath = '';
+    let filePath = '';
 
-    if (url.pathname.includes('documentation')) {
-        filePath = (__dirname + '/documentation.html');
+    if (parsedUrl.pathname.includes('documentation')) {
+        filePath = __dirname + '/documentation.html';
     } else {
-        filePath = 'index.html';
+        filePath = __dirname + '/index.html';
     }
 
-    fs.appendFile(
-        'log.txt', 
-        'URL: ${request.url} \nTimestamp: ${new Date()} \n \n', (err) => {
+    fs.appendFile('log.txt', `URL: ${parsedUrl.href}\nTimestamp: ${new Date()}\n\n`, (err) => {
         if (err) {
-            console.log('append error');
+            console.log('append error:', err);
         } else {
             console.log('msg appended');
         }
@@ -27,14 +25,12 @@ http.createServer((request,response) => {
         if (err) {
             throw err;
         }
-        response.writeHead(200, {'Content-Type': 'text/html'});
+        response.writeHead(200, { 'Content-Type': 'text/html' });
         response.write(data);
         response.end('hello node');
     });
 })
 
-.listen(8080);
-
-console.log('My test server is running on Port 8080');
-
-//
+.listen(8080, () => {
+    console.log('My test server is running on Port 8080');
+});
