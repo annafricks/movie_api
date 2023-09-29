@@ -1,8 +1,7 @@
 const express = require('express');
-const { path } = require('express/lib/application');
-fs = require('fs');
-path = require('path');
-morgan = require('morgan');
+const Path = require('path');
+const fs = require('fs');
+const morgan = require('morgan');
 
 const app = express();
 
