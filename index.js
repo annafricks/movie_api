@@ -43,6 +43,11 @@ const top10Movies = [
     year: 2011
                     }
 ];
+
+const accessLogStream = fs.createWriteStream(
+  Path.join(__dirname, 'access.log'),
+  { flags: 'a' } // 'a' means appending (old data will be preserved)
+  );
 app.use(morgan('combined', { stream: accessLogStream }));
 app.use(express.static('public'));
 
