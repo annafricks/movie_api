@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width"/>
-        <title>MyFlix API RomCom List</title>
+        <title>RomCom Movie API</title>
     </head>
     <body>
         <p>This web application provides the user with information
@@ -125,6 +125,42 @@
                                     "Description": "A romantic comedy where a magazine writer tries to drive a man away in ten days, but they end up falling in love in the process."
                                 }
                             </td>
+                        </tr>
+                        <tr>
+                            <td>Return data about a single movie by title to the user</td>
+                            <td>/movies/[title]</td>
+                            <td>GET</td>
+                            <td>None</td>
+                            <td>A JSON object holding data about a single movie, containing title, year, genre, director. Example:
+                                <code>
+                                    {
+                                        "title": "How To Lose A Guy In 10 Days",
+                                        "year": "2003",
+                                        "genre": {
+                                            "genreName": "Romantic Comedy",
+                                            "description": "A subgenre of comedy and romance films that focuses on two people falling in love amidst comical circumstances."
+                                        },
+                                        "director": {
+                                            "directorName": "Donald Petrie",
+                                            "birth": "1954",
+                                        }
+                                    }
+                                </code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Return data about a genre by name</td>
+                <td>/movies/genre/[genreName]</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object holding data about a single genre, containing genre name, description. Example:
+                    <code>
+                        {
+                            "genreName": "Romantic Comedy",
+                            "description": "A subgenre of comedy and romance films that focuses on two people falling in love amidst comical circumstances."
+                        }
+                    </code>
+                </td>
                         </tr>
                         <tr>
                             <td>Allow users to remove a movie from their list of favorites</td>
