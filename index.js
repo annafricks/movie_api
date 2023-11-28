@@ -86,8 +86,8 @@ app.put('/users/:id', (req, res) => {
   }
 })
 
-// CREATE new favorite movie for user
-app.post('/users/:id/:movieTitle', (req, res) => {
+// POST new favorite movie for user
+app.post('/users/:id/movies/:MovieID', (req, res) => {
   const id = req.params.id;
   const movieTitle = req.params.movieTitle;
 
@@ -103,7 +103,7 @@ app.post('/users/:id/:movieTitle', (req, res) => {
 })
 
 // DELETE favorite movie for user
-app.delete('/users/:id/:movieTitle', (req, res) => {
+app.delete('/users/:id/movies/:MovieID', (req, res) => {
   const id = req.params.id;
   const movieTitle = req.params.movieTitle;
 
@@ -144,7 +144,7 @@ app.get('/movies', (req, res) => {
 });
 
 // READ movie by title
-app.get('/movies/:title', (req, res) => {
+app.get('/movies/:Title', (req, res) => {
   const title = req.params.title;
   const movie = topMovies.find( movie => movie.title === title );
 
@@ -155,8 +155,20 @@ app.get('/movies/:title', (req, res) => {
   }
 })
 
-// READ genre by name
-app.get('/movies/genre/:genreName', (req, res) => {
+// READ movie info by title
+app.get('/movies/:[title]', (req, res) => {
+  const title = req.params.title;
+  const movie = topMovies.find( movie => movie.title === title );
+
+  if (movie) {
+      res.status(200).json(movie);
+  } else {
+      res.status(400).send('There is no such movie.')
+  }
+})
+
+// READ data about a genre by name
+app.get('/movies/genre/[genreName]', (req, res) => {
   const genreName = req.params.genreName;
   const genre = topMovies.find( movie => movie.genre.genreName === genreName ).genre;
 

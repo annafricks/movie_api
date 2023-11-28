@@ -23,37 +23,36 @@
             </thead>
             <tbody>
                 <tr>
-					<td>Get a list of ALL movies</td>
+					<td>Return a list of ALL movies to the user</td>
 					<td>/movies</td>
 					<td>GET</td>
-					<td>none</td>
-					<td>A JSON object holding an array with all movies.</td>
+					<td>None</td>
+					<td>A JSON object holding data about all movies</td>
 				</tr>
                 <tr>
-                    <td>Add a New User</td>
+                    <td>Create a New User</td>
                     <td>/users</td>
                     <td>POST / CREATE</td>
                     <td>None</td>
                     <td>
                         {
-                            "Username": "Anna Leigh",
+                            "id": "AnnaLeigh",
                             "Password": "321blastoff",
                             "Email": "annaleigh@hello.com"
                         }
                     </td>
                     <td>
                         <td>Allow users to add a movie to their list of favorites</td>
-                        <td>/users/:Username/movies/:MovieID</td>
+                        <td>/users/:id/movies/:MovieID</td>
                         <td>POST / CREATE</td>
                         <td>
-                            Username: AnnaLeigh
+                            id: AnnaLeigh
                             MovieID: 894jnmo428d1f7
                         </td>
                         <td>None</td>
                         <td>
                             {
-                                "_id": "85422fk599s3",
-                                "Username": "AnnaLeigh",
+                                "id": "AnnaLeigh",
                                 "Password": "321blastoff",
                                 "Email": "annaleigh@hello.com",
                                 "Favorite_Movies": [
@@ -66,33 +65,15 @@
                             }
                         </td>
                     </tr>
-                    <tr>
-                        <td>Allow users to remove a movie from their list of favorites</td>
-                        <td>/users/:Username/movies/:MovieID</td>
-                        <td>DELETE / REMOVE</td>
-                        <td>
-                            Username: AnnaLeigh
-                            MovieID: 894jnmo428d1f7
-                        </td>
-                        <td>None</td>
-                        <td>
-                            {
-                                "_id": "85422fk599s3",
-                                "Username": "AnnaLeigh",
-                                "Password": "321blastoff",
-                                "Email": "annaleigh@hello.com"
-                            }
-                        </td>
-                    </tr>
                         <td>Allow users to update their user info</td>
-                        <td>/users/:Username</td>
+                        <td>/users/:id</td>
                         <td>PUT / UPDATE</td>
                         <td>
-                            Username: AnnaLeigh
+                            id: AnnaLeigh
                         </td>
                         <td>
                             {
-                                "Username": "Anna Leigh",
+                                "id": "AnnaLeigh",
                                 "Password": "321blastoff",
                                 "Email": "annaleigh@hello.com",
                             }
@@ -164,17 +145,16 @@
                         </tr>
                         <tr>
                             <td>Allow users to remove a movie from their list of favorites</td>
-                            <td>/users/:Username/movies/:MovieID</td>
+                            <td>/users/:id/movies/:MovieID</td>
                             <td>DELETE / DELETE</td>
                             <td>
-                                Username: AnnLeigh
+                                id: AnnaLeigh
                                 MovieID: 64b9a8b924b37d0184d2b5a7
                             </td>
                             <td>None</td>
                             <td>
                                 {
-                                    "_id": "85422fk599s3",
-                                    "Username": "AnnaLeigh",
+                                    "id": "AnnaLeigh",
                                     "Password": "321blastfoff",
                                     "Email": "annaleigh@hello.com",
                                     "Favorite_Movies": [],
@@ -183,8 +163,21 @@
                                 }
                             </td>
                         </tr>
-
-                
-
+ <tr>
+    <td>Delete an existing user</td>
+    <td>/users/:id</td>
+    <td>DELETE / DELETE</td>
+    <td>
+        id: AnnaLeigh
+    </td>
+    <td>None</td>
+    <td>
+         {
+            "id": "AnnaLeigh",
+            "Password": "321blastfoff",
+            "Email": "annaleigh@hello.com"
+         }
+    </td>
+</tr>
     </body>
 </html>
