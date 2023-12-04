@@ -5,8 +5,8 @@ const morgan = require('morgan');
 
 const app = express();
 
-// Top 10 RomCom movies
-const top10Movies = [
+// Top RomCom movies
+const topMovies = [
   {
     title: 'How to Lose a Guy in 10 Days',
     director: 'Donald Petrie',
@@ -201,12 +201,12 @@ app.use(express.static('public'));
 
 // Define the GET route at "/movies"
 app.get('/movies', (req, res) => {
-  res.json({ top10Movies });
+  res.json({ topMovies });
 });
 
 // Define a GET route at "/" that returns a default textual response
 app.get('/', (req, res) => {
-  res.send('Welcome to my Top10 Rom Coms!');
+  res.send('Welcome to my Top Rom Coms!');
 });
 
 app.use((err,req,res,next) => {
