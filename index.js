@@ -2,60 +2,90 @@ const express = require('express');
 const Path = require('path');
 const fs = require('fs');
 const morgan = require('morgan');
-
 const app = express();
+const uuid = require('uuid');
+
+app.use(bodyParser.json());
 
 // Top RomCom movies
-const topMovies = [
+let movies = [
   {
-    title: 'How to Lose a Guy in 10 Days',
-    director: 'Donald Petrie',
-    year: 2003,
-    genre: 'Romantic Comedy',
-      description: 'A subgenre of comedy and romance films that focuses on two people falling in love amidst comical circumstances.',
+    "Title":"How to Lose a Guy in 10 Days",
+    "Director":"Donald Petrie",
+    "Description": "[]",
+    "Genre": {
+      "Name":"Romantic Comedy",
+      "Description": "A subgenre of comedy and romance films that focuses on two people falling in love amidst comical circumstances.",
+  },
+  "Director": {
+    "Name":"Donald Petrie",
+    "Bio":"[]",
+    "Birth":"[]",
+    "Death":"[]"
+  },
+  "ImagePath":"[]",
+},
+  {
+    "Title":"Clueless",
+    "Director":"Amy Heckerling",
+    "Description":"[]",
+    "Genre": {
+      "Name":"Romantic Comedy",
+      "Description":"A subgenre of comedy and romance films that focuses on two people falling in love amidst comical circumstances.",
+  }},
+  {
+    "Title": "10 Things I Hate About You",
+    "Director": "Gil Junger",
+    "Description": "[]",
+    "Genre": {
+      "Name":"Romantic Comedy",
+      "Description":"A subgenre of comedy and romance films that focuses on two people falling in love amidst comical circumstances.",
+  }},
+        {
+    "Title": "The Proposal",
+    "Director": "Anne Fletcher",
+    "Description": "[]",
+    "Genre": {
+      "Name":"Romantic Comedy",
+      "Description":"A subgenre of comedy and romance films that focuses on two people falling in love amidst comical circumstances.",
+  }},
+        {
+    "Title": "About Time",
+    "Director": "Richard Curtis",
+    "Description": "[]",
+    "Genre": {
+      "Name":"Romantic Comedy",
+      "Description":"A subgenre of comedy and romance films that focuses on two people falling in love amidst comical circumstances.",
+    }},
+        {
+    "Title": "She\'s All That",
+    "Director":"Robert Iscove",
+    "Description": "[]",
+    "Genre": {
+      "Name":"Romantic Comedy",
+      "Description":"A subgenre of comedy and romance films that focuses on two people falling in love amidst comical circumstances.",
+    }},
+        {
+    "Title": "Crazy Stupid Love",
+    "Director": "Glenn Ficarra, John Requa",
+    "Description": "[]", 
+    "Genre": {
+      "Name":"Romantic Comedy",
+      "Description":"A subgenre of comedy and romance films that focuses on two people falling in love amidst comical circumstances.",
+    }}
+]
+
+let users = [
+  {
+    id: 1,
+    name: 'Jane Doe',
+    favoriteMovies: []
   },
   {
-    title: 'Clueless',
-    director: 'Amy Heckerling',
-    year: 1995,
-    genre: 'Romantic Comedy',
-    description: 'A subgenre of comedy and romance films that focuses on two people falling in love amidst comical circumstances.',
-  },
-  {
-    title: '10 Things I Hate About You',
-    director: 'Gil Junger',
-    year: 1999,
-    genre: 'Romantic Comedy',
-    description: 'A subgenre of comedy and romance films that focuses on two people falling in love amidst comical circumstances.',
-  },
-        {
-    title: 'The Proposal',
-    director: 'Anne Fletcher',
-    year: 2009,
-    genre: 'Romantic Comedy',
-    description: 'A subgenre of comedy and romance films that focuses on two people falling in love amidst comical circumstances.',
-  },
-        {
-    title: 'About Time',
-    director: 'Richard Curtis',
-    year: 2013,
-    genre: 'Romantic Comedy',
-    description: 'A subgenre of comedy and romance films that focuses on two people falling in love amidst comical circumstances.',
-    },
-        {
-    title: 'She\'s All That',
-    director: 'Robert Iscove',
-    year: 1999,
-    genre: 'Romantic Comedy',
-    description: 'A subgenre of comedy and romance films that focuses on two people falling in love amidst comical circumstances.',
-    },
-        {
-    title: 'Crazy Stupid Love',
-    director: 'Glenn Ficarra, John Requa',
-    year: 2011,
-    genre: 'Romantic Comedy',
-    description: 'A subgenre of comedy and romance films that focuses on two people falling in love amidst comical circumstances.',
-    }
+    id: 2,
+    name: 'John Doe',
+    favoriteMovies: ["Clueless"]
+  }
 ]
 
 // CREATE new user
@@ -73,8 +103,9 @@ app.post('/users', (req, res) => {
 
 // UPDATE user information
 app.put('/users/:id', (req, res) => {
-  const id = req.params.id;
+  const id = req.params;
   const updatedUser = req.body;
+
 
   let user = users.find( user => user.id == id );
 
@@ -82,14 +113,13 @@ app.put('/users/:id', (req, res) => {
       user.name = updatedUser.name;
       res.status(200).json(user);
   } else {
-      res.status(400).send('No such user found.')
+      res.status(400).send('No such user.')
   }
 })
 
-// POST new favorite movie for user
-app.post('/users/:id/movies/:MovieID', (req, res) => {
-  const id = req.params.id;
-  const movieTitle = req.params.movieTitle;
+// CREATE new favorite movie for user
+app.post('/users/:id/:movieTitle', (req, res) => {
+  const {id, movieTitle } = req.params;
 
   let user = users.find( user => user.id == id );
 
@@ -103,9 +133,8 @@ app.post('/users/:id/movies/:MovieID', (req, res) => {
 })
 
 // DELETE favorite movie for user
-app.delete('/users/:id/movies/:MovieID', (req, res) => {
-  const id = req.params.id;
-  const movieTitle = req.params.movieTitle;
+app.delete('/users/:id/:movieTitle', (req, res) => {
+  const { id, movieTitle } = req.params;
 
   let user = users.find( user => user.id == id );
 
@@ -114,13 +143,13 @@ app.delete('/users/:id/movies/:MovieID', (req, res) => {
       user.favoriteMovies = user.favoriteMovies.filter( title => title !== movieTitle);
       res.status(200).send(movieTitle + ' has been removed from user ' + id + '\'s array.');
   } else {
-      res.status(400).send('No such user found')
+      res.status(400).send('No such user')
   }
 })
 
 // DELETE user
 app.delete('/users/:id', (req, res) => {
-  const id = req.params.id;
+  const id = req.params;
 
   let user = users.find( user => user.id == id );
 
@@ -129,7 +158,7 @@ app.delete('/users/:id', (req, res) => {
       users = users.filter( user => user.id != id);
       res.status(200).send('User ' + id + ' has been deleted.');
   } else {
-      res.status(400).send('No such user found')
+      res.status(400).send('No such user')
   }
 })
 
@@ -140,25 +169,13 @@ app.get('/', (req, res) => {
 
 // READ movie list
 app.get('/movies', (req, res) => {
-  res.status(200).json(topMovies);
+  res.status(200).json(movies);
 });
 
 // READ movie by title
-app.get('/movies/:Title', (req, res) => {
-  const title = req.params.title;
-  const movie = topMovies.find( movie => movie.title === title );
-
-  if (movie) {
-      res.status(200).json(movie);
-  } else {
-      res.status(400).send('There is no such movie.')
-  }
-})
-
-// READ movie info by title
-app.get('/movies/:[title]', (req, res) => {
-  const title = req.params.title;
-  const movie = topMovies.find( movie => movie.title === title );
+app.get('/movies/:title', (req, res) => {
+  const { title } = req.params;
+  const movie = movies.find( movie => movie.title === title );
 
   if (movie) {
       res.status(200).json(movie);
@@ -168,9 +185,9 @@ app.get('/movies/:[title]', (req, res) => {
 })
 
 // READ data about a genre by name
-app.get('/movies/genre/[genreName]', (req, res) => {
+app.get('/movies/genre/genreName', (req, res) => {
   const genreName = req.params.genreName;
-  const genre = topMovies.find( movie => movie.genre.genreName === genreName ).genre;
+  const genre = movies.find( movie => movie.Genre.Name === genreName ).Genre;
 
   if (genre) {
       res.status(200).json(genre);
@@ -182,7 +199,7 @@ app.get('/movies/genre/[genreName]', (req, res) => {
 // READ director by name
 app.get('/movies/directors/:directorName', (req, res) => {
   const directorName = req.params.directorName;
-  const director = topMovies.find( movie => movie.director.directorName === directorName ).director;
+  const director = movies.find( movie => movie.Director.Name === directorName ).Director;
 
   if (director) {
       res.status(200).json(director);
@@ -201,12 +218,12 @@ app.use(express.static('public'));
 
 // Define the GET route at "/movies"
 app.get('/movies', (req, res) => {
-  res.json({ topMovies });
+  res.json({ movies });
 });
 
 // Define a GET route at "/" that returns a default textual response
 app.get('/', (req, res) => {
-  res.send('Welcome to my Top Rom Coms!');
+  res.send('Welcome to my Movie Page!');
 });
 
 app.use((err,req,res,next) => {
@@ -219,3 +236,5 @@ const port = 8080;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+
