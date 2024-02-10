@@ -3,13 +3,14 @@
     <head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width"/>
-        <title>RomCom Movie API</title>
+        <title>Movie API</title>
     </head>
     <body>
-        <p>This web application provides the user with information
-            regarding movies in the genre Romatic Comedy. The user will be
-            able to update their information and create a list of
-            their favorite movies.
+        <p>
+            This is a web application focusing on movies. The web
+            application will provide users with access to information about different
+            movies, directors, and genres. Users will be able to sign up, update their
+            personal information, and create a list of their favorite movies.
         </p>
         <table>
             <thead>
@@ -20,164 +21,81 @@
 					<th class="col-3">Request body data format</th>
 					<th class="col-5">Response body data format</th>
 				</tr>
-            </thead>
-            <tbody>
-                <tr>
-					<td>Return a list of ALL movies to the user</td>
-					<td>/movies</td>
-					<td>GET</td>
-					<td>None</td>
-					<td>A JSON object holding data about all movies</td>
-				</tr>
-                <tr>
-                    <td>Create a New User</td>
-                    <td>/users</td>
-                    <td>POST / CREATE</td>
-                    <td>None</td>
-                    <td>
-                        {
-                            "id": "AnnaLeigh",
-                            "Password": "321blastoff",
-                            "Email": "annaleigh@hello.com"
-                        }
-                    </td>
-                    <td>
-                        <td>Allow users to add a movie to their list of favorites</td>
-                        <td>/users/:id/movies/:MovieID</td>
-                        <td>POST / CREATE</td>
-                        <td>
-                            id: AnnaLeigh
-                            MovieID: 894jnmo428d1f7
-                        </td>
-                        <td>None</td>
-                        <td>
-                            {
-                                "id": "AnnaLeigh",
-                                "Password": "321blastoff",
-                                "Email": "annaleigh@hello.com",
-                                "Favorite_Movies": [
-                                    {
-                                        "_id": "894jnmo428d1f7",
-                                        "Title": "How to Lose a Guy in 10 Days"
-                                    }
-                                ],
-                                "__v": 0
-                            }
-                        </td>
-                    </tr>
-                        <td>Allow users to update their user info</td>
-                        <td>/users/:id</td>
-                        <td>PUT / UPDATE</td>
-                        <td>
-                            id: AnnaLeigh
-                        </td>
-                        <td>
-                            {
-                                "id": "AnnaLeigh",
-                                "Password": "321blastoff",
-                                "Email": "annaleigh@hello.com",
-                            }
-                    </td>
-                </tr>
-                <tr>
-                            <td>Return data about a single movie by title to the user</td>
-                            <td>/movies/:Title</td>
-                            <td>GET / READ</td>
-                            <td>
-                                Title: How To Lose a Guy in 10 Days
-                            </td>
-                            <td>None</td>
-                            <td>
-                                {
-                                    "Actors": [],
-                                    "_id": "894jnmo428d1f7",
-                                    "Title": "How To Lose a Guy in 10 Days",
-                                    "Release_year": "2003",
-                                    "Rating": "PG-13",
-                                    "Genre": {
-                                        "_id": "bdzp009193hd9w",
-                                        "Name": "Romantic Comedy"
-                                    },
-                                    "Director": {
-                                        "_id": "5188gg5r7jmrg4",
-                                        "Name": "Donald Petrie"
-                                    },
-                                    "Image_Url": "https://upload.wikimedia.org/wikipedia/en/thumb/9/93/Howtoloseaguy.jpg/220px-Howtoloseaguy.jpg",
-                                    "Description": "A romantic comedy where a magazine writer tries to drive a man away in ten days, but they end up falling in love in the process."
-                                }
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Return data about a single movie by title to the user</td>
-                            <td>/movies/[title]</td>
-                            <td>GET</td>
-                            <td>None</td>
-                            <td>A JSON object holding data about a single movie, containing title, year, genre, director. Example:
-                                <code>
-                                    {
-                                        "title": "How To Lose A Guy In 10 Days",
-                                        "year": "2003",
-                                        "genre": {
-                                            "genreName": "Romantic Comedy",
-                                            "description": "A subgenre of comedy and romance films that focuses on two people falling in love amidst comical circumstances."
-                                        },
-                                        "director": {
-                                            "directorName": "Donald Petrie",
-                                            "birth": "1954",
-                                        }
-                                    }
-                                </code>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Return data about a genre by name</td>
-                <td>/movies/genre/[genreName]</td>
-                <td>GET</td>
-                <td>None</td>
-                <td>A JSON object holding data about a single genre, containing genre name, description. Example:
-                    <code>
-                        {
-                            "genreName": "Romantic Comedy",
-                            "description": "A subgenre of comedy and romance films that focuses on two people falling in love amidst comical circumstances."
-                        }
-                    </code>
-                </td>
-                        </tr>
-                        <tr>
-                            <td>Allow users to remove a movie from their list of favorites</td>
-                            <td>/users/:id/movies/:MovieID</td>
-                            <td>DELETE / DELETE</td>
-                            <td>
-                                id: AnnaLeigh
-                                MovieID: 64b9a8b924b37d0184d2b5a7
-                            </td>
-                            <td>None</td>
-                            <td>
-                                {
-                                    "id": "AnnaLeigh",
-                                    "Password": "321blastfoff",
-                                    "Email": "annaleigh@hello.com",
-                                    "Favorite_Movies": [],
-                                    "__v": 0,
-                                    "Birth_Date": "1990-01-01T00:00:00.000Z"
-                                }
-                            </td>
-                        </tr>
- <tr>
-    <td>Delete an existing user</td>
-    <td>/users/:id</td>
-    <td>DELETE / DELETE</td>
-    <td>
-        id: AnnaLeigh
-    </td>
-    <td>None</td>
-    <td>
-         {
-            "id": "AnnaLeigh",
-            "Password": "321blastfoff",
-            "Email": "annaleigh@hello.com"
-         }
-    </td>
-</tr>
+                    <thead>
+                      <tr>
+                        <th>Endpoint</th>
+                        <th>HTTP Method</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>/movies</td>
+                        <td>GET</td>
+                        <td>Returns all movies.</td>
+                      </tr>
+                      <tr>
+                        <td>/users</td>
+                        <td>GET</td>
+                        <td>Returns all users.</td>
+                      </tr>
+                      <tr>
+                        <td>/movies/:Title</td>
+                        <td>GET</td>
+                        <td>Returns a movie based on the provided title.</td>
+                      </tr>
+                      <tr>
+                        <td>/movies/genres/:genreName</td>
+                        <td>GET</td>
+                        <td>Returns movies based on the provided genre name.</td>
+                      </tr>
+                      <tr>
+                        <td>/movies/directors/:directorName</td>
+                        <td>GET</td>
+                        <td>Returns data from a director based on the provided name.</td>
+                      </tr>
+                      <tr>
+                        <td>/users</td>
+                        <td>POST</td>
+                        <td>Allows new users to register.</td>
+                      </tr>
+                      <tr>
+                        <td>/users/:Username</td>
+                        <td>PUT</td>
+                        <td>Allows users to update their information (username, password, email, birthday).</td>
+                      </tr>
+                      <tr>
+                        <td>/users/:Username/movies/:MovieID</td>
+                        <td>POST</td>
+                        <td>Allows users to add movies to their favorites list.</td>
+                      </tr>
+                      <tr>
+                        <td>/users/:Username/movies/:MovieID</td>
+                        <td>DELETE</td>
+                        <td>Allows users to remove a movie from their favorites list.</td>
+                      </tr>
+                      <tr>
+                        <td>/users/:Username</td>
+                        <td>DELETE</td>
+                        <td>Allows users to delete their registration.</td>
+                      </tr>
+                      <tr>
+                        <td>/</td>
+                        <td>GET</td>
+                        <td>Returns a simple text message.</td>
+                      </tr>
+                      <tr>
+                        <td>Static Files</td>
+                        <td>N/A</td>
+                        <td>Serves static files from the "public" folder.</td>
+                      </tr>
+                      <tr>
+                        <td>Error Handling</td>
+                        <td>N/A</td>
+                        <td>Logs all errors to the terminal.</td>
+                      </tr>
+                    </tbody>
+        </table>
+                    
     </body>
 </html>

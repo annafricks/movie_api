@@ -1,9 +1,21 @@
-const express = require('express');
-const Path = require('path');
-const fs = require('fs');
+const express = require('express'); //Express.js to create the web application//
+const bodyParser = require('body-parser'); //for parsing request bodies//
+const Path = require('path'); //Path for working with file paths//
+const fs = require('fs'); //file system for file operations//
 const morgan = require('morgan');
-const app = express();
-const uuid = require('uuid');
+const app = express(); //create an instance of the express application//
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+const uuid = require('uuid'); //for generating unique identifiers//
+//added mongoose and connected database
+const mongoose = require('mongoose'); //Mongoose to interact with MongoDB//
+const Models = require('./models.js '); //import your custom data models//
+const Movies = Models.Movie; // Movie model //
+const Users = Models.User; // User model //
+
+//connecting the datatbase
+mongoose.connect('mongodb://localhost:27017/mongodbtest', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(bodyParser.json());
 
@@ -12,94 +24,216 @@ let movies = [
   {
     "Title":"How to Lose a Guy in 10 Days",
     "Director":"Donald Petrie",
-    "Description": "[]",
+    "Description": "An advice columnist tries pushing the boundaries of what she can write about in her new piece about how to get a man to leave you in 10 days, but her plan backfires as she falls for the guy she tries to bring down.",
     "Genre": {
       "Name":"Romantic Comedy",
       "Description": "A subgenre of comedy and romance films that focuses on two people falling in love amidst comical circumstances.",
   },
   "Director": {
     "Name":"Donald Petrie",
-    "Bio":"[]",
-    "Birth":"[]",
-    "Death":"[]"
+    "Bio":"Donald Mark Petrie is an American actor, director, and screenwriter known for his movies How to Lose a Guy in 10 Days, Miss Congeniality and Grumpy Old Men.",
+    "Birth":"April 2, 1954",
   },
   "ImagePath":"[]",
 },
   {
-    "Title":"Clueless",
-    "Director":"Amy Heckerling",
-    "Description":"[]",
+    "Title":"Seven",
+    "Director":"David Fincher",
+    "Description":"Set in an unnamed, crime-ridden city, Seven's narrative follows disenchanted, near-retirement detective William Somerset (Freeman) and his newly transferred partner David Mills (Pitt) as they endeavor to thwart a serial killer from executing a series of murders based on the seven deadly sins.",
     "Genre": {
-      "Name":"Romantic Comedy",
-      "Description":"A subgenre of comedy and romance films that focuses on two people falling in love amidst comical circumstances.",
+      "Name":"Mystery",
+      "Description":"A mystery film is a genre of film that revolves around the solution of a problem or a crime.",
+  },
+  "Director": {
+    "Name":"David Fincher",
+    "Bio":"David Fincher is an American film director. Known for his psychological thrillers, his films have received 40 nominations at the Academy Awards, including three for him as Best Director.",
+    "Birth":"August 28, 1962",
   }},
   {
-    "Title": "10 Things I Hate About You",
-    "Director": "Gil Junger",
-    "Description": "[]",
+    "Title": "Romy and Michele's High School Reunion",
+    "Director": "David Mirkin",
+    "Description": "Two dim-witted, inseparable friends hit the road for their ten-year high school reunion and concoct an elaborate lie about their lives in order to impress their classmates.",
     "Genre": {
-      "Name":"Romantic Comedy",
-      "Description":"A subgenre of comedy and romance films that focuses on two people falling in love amidst comical circumstances.",
-  }},
-        {
-    "Title": "The Proposal",
-    "Director": "Anne Fletcher",
-    "Description": "[]",
-    "Genre": {
-      "Name":"Romantic Comedy",
-      "Description":"A subgenre of comedy and romance films that focuses on two people falling in love amidst comical circumstances.",
-  }},
-        {
-    "Title": "About Time",
-    "Director": "Richard Curtis",
-    "Description": "[]",
-    "Genre": {
-      "Name":"Romantic Comedy",
-      "Description":"A subgenre of comedy and romance films that focuses on two people falling in love amidst comical circumstances.",
+      "Name":"Comedy",
+      "Description":"Comedy is a genre of fiction that consists of discourses or works intended to be humorous or amusing by inducing laughter",
+    },
+    "Director": {
+      "Name":"David Mirkin",
+      "Bio":"David Mirkin is an American feature film and television director, writer and producer. Mirkin grew up in Philadelphia and intended to become an electrical engineer, but abandoned this career path in favor of studying film at Loyola Marymount University.",
+      "Birth":"September 18, 1955",
     }},
         {
-    "Title": "She\'s All That",
-    "Director":"Robert Iscove",
-    "Description": "[]",
+    "Title": "The Witch",
+    "Director": "Robert Eggers",
+    "Description": "The Witch is a chilling portrait of a family unraveling within their own sins, leaving them prey for an inconceivable evil.",
     "Genre": {
-      "Name":"Romantic Comedy",
-      "Description":"A subgenre of comedy and romance films that focuses on two people falling in love amidst comical circumstances.",
+      "Name":"Horror",
+      "Description":"Horror is a genre of literature, film, and television that is meant to scare, startle, shock, and even repulse audiences",
+    },
+    "Director": {
+      "Name":"Robert Eggers",
+      "Bio":"Robert Eggers is an American film director, screenwriter, and production designer. He is best known for his critically acclaimed horror films The Witch and The Lighthouse.",
+      "Birth":"July 7, 1983",
     }},
         {
-    "Title": "Crazy Stupid Love",
-    "Director": "Glenn Ficarra, John Requa",
-    "Description": "[]", 
+    "Title": "The Dark knight",
+    "Director": "Christopher Nolan",
+    "Description": "The plot follows the vigilante Batman, police lieutenant James Gordon, and district attorney Harvey Dent, who form an alliance to dismantle organized crime in Gotham City, who's efforts are dereailed by the Joker",
     "Genre": {
-      "Name":"Romantic Comedy",
-      "Description":"A subgenre of comedy and romance films that focuses on two people falling in love amidst comical circumstances.",
-    }}
-]
+      "Name":"Action",
+      "Description":"Action is a film genre in which the protagonist is thrust into a series of events that typically involve violence and physical feats.",
+    },
+    "Director": {
+      "Name":"Christopher Nolan",
+      "Bio":"Christopher Edward Nolan is a British-American film director, producer, and screenwriter. His directorial efforts have grossed more than $5 billion worldwide, garnered 36 Oscar nominations and ten wins.",
+      "Birth":"July 30, 1970",
+    }},
+        {
+    "Title": "The Lord of the Rings: The Fellowship of the Ring",
+    "Director":"Peter Jackson",
+    "Description": "Set in Middle-earth, the story tells of the Dark Lord Sauron, who seeks the One Ring, which contains part of his might, to return to power.",
+    "Genre": {
+      "Name":"Fantasy",
+      "Description":"Fantasy is a genre of speculative fiction set in a fictional universe, often inspired by real world myth and folklore.",
+    },
+    "Director": {
+      "Name":"Peter Jackson",
+      "Bio":"Sir Peter Robert Jackson is a New Zealand film director, producer, and screenwriter. He is best known as the director, writer, and producer of the Lord of the Rings trilogy and the Hobbit trilogy.",
+      "Birth":"October 31, 1961",
+    }},
+        {
+    "Title": "Killers of the Flower Moon",
+    "Director": "Martin Scorsese",
+    "Description": "Killers of the Flower Moon is a 2021 American crime drama film directed by Martin Scorsese, based on the 2017 non-fiction book of the same name by David Grann.", 
+    "Genre": {
+      "Name":"Drama",
+      "Description":"Drama is a genre of narrative fiction (or semi-fiction) intended to be more serious than humorous in tone, focusing on in-depth development of realistic characters who must deal with realistic emotional struggles.",
+    },
+    "Director": {
+      "Name":"Martin Scorsese",
+      "Bio":"Martin Charles Scorsese is an American film director, producer, screenwriter, and actor. One of the major figures of the New Hollywood era, he is widely regarded as one of the most significant and influential directors in film history.",
+      "Birth":"November 17, 1942",
+    }},
+{
+      "Title": "Jurassic Park",
+      "Director": "Steven Spielberg",
+      "Description": "A pragmatic paleontologist visiting an almost complete theme park is tasked with protecting a couple of kids after a power failure causes the park's cloned dinosaurs to run loose.", 
+      "Genre": {
+        "Name":"Science Fiction",
+        "Description":"Science fiction is a genre of speculative fiction that typically deals with imaginative and futuristic concepts such as advanced science and technology, space exploration, time travel, parallel universes, and extraterrestrial life.",
+      },
+      "Director": {
+        "Name":"Steven Spielberg",
+        "Bio":"Steven Spielberg is an American film director, producer, and screenwriter. He is considered one of the founding pioneers of the New Hollywood era and one of the most popular directors and producers in film history.",
+        "Birth":"December 18, 1946",
+      }},
+      {
+        "Title": "Pulp Fiction",
+        "Director": "Quentin Tarantino",
+        "Description": "The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.", 
+        "Genre": {
+          "Name":"Crime",
+          "Description":"Crime films, in the broadest sense, are a cinematic genre inspired by and analogous to the crime fiction literary genre.",
+        },
+        "Director": {
+          "Name":"Quentin Tarantino",
+          "Bio":"Quentin Tarantino is an American film director, screenwriter, producer, and actor. His films are characterized by nonlinear storylines, dark humor, aestheticization of violence, extended scenes of dialogue, ensemble casts, references to popular culture and a wide variety of other films, eclectic soundtracks primarily containing songs and score pieces from the 1960s to the 1980s, alternate history, and features of neo-noir film.",
+          "Birth":"March 27, 1963",
+        }},
+        {
+          "Title": "The Wolf of Wall Street",
+          "Director": "Martin Scorcese",
+          "Description": "Based on the true story of Jordan Belfort, from his rise to a wealthy stock-broker living the high life to his fall involving crime, corruption and the federal government.", 
+          "Genre": {
+            "Name":"Crime",
+            "Description":"Crime films, in the broadest sense, are a cinematic genre inspired by and analogous to the crime fiction literary genre.",
+          },
+          "Director": {
+            "Name":"Martin Scorsese",
+            "Bio":"Martin Charles Scorsese is an American film director, producer, screenwriter, and actor. One of the major figures of the New Hollywood era, he is widely regarded as one of the most significant and influential directors in film history.",
+            "Birth":"November 17, 1942",
+          }},
+  
+  ]
 
 let users = [
   {
-    id: 1,
-    name: 'Jane Doe',
-    favoriteMovies: []
+    id: "658e4506ca2edb72552989db",
+    Username: "LillyB",
+    Password: "freebow098",
+    Email: "lillyb@email.com",
+    Birthday: {"$date":"1995-06-13"},
+    FavoriteMovies: [{"$oid":"658e27ebca2edb72552989d6"},{"$oid":"658e07d8ca2edb72552989d3"}]
   },
   {
-    id: 2,
-    name: 'John Doe',
-    favoriteMovies: ["Clueless"]
-  }
+    id: "658e4606ca2edb72552989dc",
+    Username: "BillieForest",
+    Password: "jellybean23",
+    Email: "billiebf@email.com",
+    Birthday: {"$date":"1991-12-17"},
+    FavoriteMovies: {"$oid":"658dfc18ca2edb72552989d0"},
+  },
+  {
+    id: "658e4711ca2edb72552989dd",
+    Username: "MadsaboutU",
+    Password: "borninmilwaukee89",
+    Email: "maddierue@email.com",
+    Birthday: {"$date":"1989-04-15"},
+    FavoriteMovies: {"$oid":"658e0542ca2edb72552989d1"},
+  },
+  {
+  id: "658e47deca2edb72552989de",
+  Username: "Romanofwar",
+  Password: "strength29aaa",
+  Email: "romanfusa24@email.com",
+  Birthday: {"$date":"1994-01-07"},
+  FavoriteMovies: {"$oid":"658e06bcca2edb72552989d2"},
+  },
+  {
+    id: "658e48a2ca2edb72552989df",
+    Username: "MitchWS",
+    Password: "ila2023",
+    Email: "mws1993@email.com",
+    Birthday: {"$date":"1993-09-03"},
+    FavoriteMovies: {"$oid":"658e402cca2edb72552989d9"},
+},
 ]
 
 // CREATE new user
-app.post('/users', (req, res) => {
-  const newUser = req.body;
-
-  if (newUser.name) {
-      newUser.id = uuid.v4();
-      users.push(newUser);
-      res.status(201).json(newUser)
-  } else {
-      res.status(400).send('Name is required.')
-  }
-})
+//Add a user
+/* We’ll expect JSON in this format
+{
+  ID: Integer,
+  Username: String,
+  Password: String,
+  Email: String,
+  Birthday: Date
+}*/
+app.post('/users', async (req, res) => {
+  await Users.findOne({ Username: req.body.Username })
+    .then((user) => {
+      if (user) {
+        return res.status(400).send(req.body.Username + 'already exists');
+      } else {
+        Users
+          .create({
+            Username: req.body.Username,
+            Password: req.body.Password,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday
+          })
+          .then((user) =>{res.status(201).json(user) })
+        .catch((error) => {
+          console.error(error);
+          res.status(500).send('Error: ' + error);
+        })
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
+});
 
 // UPDATE user information
 app.put('/users/:id', (req, res) => {
@@ -118,19 +252,40 @@ app.put('/users/:id', (req, res) => {
 })
 
 // CREATE new favorite movie for user
-app.post('/users/:id/:movieTitle', (req, res) => {
-  const {id, movieTitle } = req.params;
-
-  let user = users.find( user => user.id == id );
-
-
-  if (user) {
-      user.favoriteMovies.push(movieTitle);
-      res.status(200).send(movieTitle + ' has been added to user ' + id + '\'s array');
-  } else {
-      res.status(400).send('There is no such user')
-  }
-})
+//Add a user
+/* We’ll expect JSON in this format
+{
+  ID: Integer,
+  Username: String,
+  Password: String,
+  Email: String,
+  Birthday: Date
+}*/
+app.post('/users', async (req, res) => {
+  await Users.findOne({ Username: req.body.Username })
+    .then((user) => {
+      if (user) {
+        return res.status(400).send(req.body.Username + 'already exists');
+      } else {
+        Users
+          .create({
+            Username: req.body.Username,
+            Password: req.body.Password,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday
+          })
+          .then((user) =>{res.status(201).json(user) })
+        .catch((error) => {
+          console.error(error);
+          res.status(500).send('Error: ' + error);
+        })
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
+});
 
 // DELETE favorite movie for user
 app.delete('/users/:id/:movieTitle', (req, res) => {
