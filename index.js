@@ -9,13 +9,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const uuid = require('uuid'); //for generating unique identifiers//
 //added mongoose and connected database
 const mongoose = require('mongoose'); //Mongoose to interact with MongoDB//
-const Models = require('./models.js '); //import your custom data models//
+const Models = require('./models.js'); //import your custom data models//
 const Movies = Models.Movie; // Movie model //
 const Users = Models.User; // User model //
 
-//connecting the datatbase
-mongoose.connect('mongodb://localhost:27017/mongodbtest', { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+//connecting the database
+console.log('Connecting to MongoDB database using URI:', 'mongodb://localhost:27017/mongodb');
+mongoose.connect('mongodb://localhost:27017/mongodb'); //{ useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(bodyParser.json());
 
@@ -386,8 +386,8 @@ app.use((err,req,res,next) => {
     res.status(500).send('Something broke!');
     });
 
-// Start the Express server on a specific port (8080)
-const port = 8080;
+// Start the Express server on a specific port (8081)
+const port = 8081;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

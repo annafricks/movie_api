@@ -24,7 +24,7 @@ let userSchema = mongoose.Schema({
     Email: {type: String, required: true},
     //birthday is key, date is the value of the data type. so wherever there is a birthday, it must be filled with the value of the data type DATE//
     Birthday: Date,
-    FavoriteMovies:[{ type: mongoose.SchemaType.Types.ObjectId, ref: 'Movie' }]
+    FavoriteMovies:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }]
 });
 
 //define movie and user models//
