@@ -3,21 +3,67 @@ const bodyParser = require('body-parser'); //for parsing request bodies//
 const Path = require('path'); //Path for working with file paths//
 const fs = require('fs'); //file system for file operations//
 const morgan = require('morgan');
-const app = express(); //create an instance of the express application//
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 const uuid = require('uuid'); //for generating unique identifiers//
+
 //added mongoose and connected database
 const mongoose = require('mongoose'); //Mongoose to interact with MongoDB//
+console.log('Connecting to MongoDB database using URI:', 'mongodb://localhost:27017/mongodb');
+mongoose.connect('mongodb://localhost:27017/mongodb'); //{ useNewUrlParser: true, useUnifiedTopology: true });
+
+const Schema = mongoose.Schema; //Mongoose schema for defining the structure of the data//
 const Models = require('./models.js'); //import your custom data models//
 const Movies = Models.Movie; // Movie model //
 const Users = Models.User; // User model //
 
-//connecting the database
-console.log('Connecting to MongoDB database using URI:', 'mongodb://localhost:27017/mongodb');
-mongoose.connect('mongodb://localhost:27017/mongodb'); //{ useNewUrlParser: true, useUnifiedTopology: true });
+//create an instance of the express application
+const app = express(); //create an instance of the express application//
 
+//to use CORS within my app
+const cors = require('cors');
+app.use(cors());
+
+const passport = require('passport');
+require('./passport'); //import the passport.js file//
+
+//initialize middleware
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(passport.initialize());
+app.use(morgan('common'));
+
+//Import the auth middleware after initializing passport
+let auth = require('./auth')(app); //import the auth.js file for login authentication////added mongoose and connected database
+
+//load documentation page
+app.use(express.static("public"));
+
+app.post('/users', async (req, res) => {
+let hashedPassword = Users.hashPassword(req.body.Password);
+await Users.findOne({ Username: req.body.Username }) //search to see if a user with the requested username already exists 
+.then((user) => {
+if (user) {
+  //if the user is found, send a response that it already exists
+  return res.status(400).send(req.body.Username + 'already exists');
+} else {
+  Users
+  .create({
+    Username: req.body.Username,
+    Password: hashedPassword,
+    Email: req.body.Email,
+    Birthday: req.body.Birthday
+  })
+  .then((user) =>{res.status(201).json(user) })
+  .catch((error) => {
+    console.error(error);
+    res.status(500).send('Error: ' + error);
+  });
+}
+})
+  .catch((error) => {
+  console.error(error);
+  res.status(500).send('Error: ' + error);
+  });
+});
 
 // Top RomCom movies
 let movies = [
@@ -307,10 +353,18 @@ app.delete('/users/:id', (req, res) => {
 app.get('/', (req, res) => {
   res.send('Welcome to my movie page!');
 });
-
-// READ movie list
-app.get('/movies', (req, res) => {
+// READ all movies
+//applying JWT authentication to the /movies endpoint  - DO I NEED BOTH (ABOVE AND BELOW)?
+app.get('/movies', passport.authenticate('jwt', { session: false }),
+async (req, res) => {
+  await Movies.find()
+  .then((movies) => {
   res.status(200).json(movies);
+})
+.catch((error) => {
+  console.error(error);
+  res.status(500).send('Error: ' + error);
+  });
 });
 
 // READ movie by title

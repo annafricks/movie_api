@@ -16,6 +16,7 @@ let movieSchema = mongoose.Schema({
     Featured: Boolean
 });
 
+const bcrypt = require('bcrypt'); //import bcrypt to hash passwords//
 //now define the schema for the user//
 let userSchema = mongoose.Schema({
     //required: true means that the field must be filled in. type: string the value MUST be a string//
@@ -26,6 +27,14 @@ let userSchema = mongoose.Schema({
     Birthday: Date,
     FavoriteMovies:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }]
 });
+
+userSchema.statics.hashPassword = (password) => {
+    return bcrypt.hashSync(password, 10);
+  };
+  
+  userSchema.methods.validatePassword = function(password) {
+    return bcrypt.compareSync(password, this.Password);
+  };
 
 //define movie and user models//
 let Movie = mongoose.model("Movie", movieSchema);
