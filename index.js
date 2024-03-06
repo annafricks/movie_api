@@ -21,6 +21,7 @@ const app = express(); //create an instance of the express application//
 //to use CORS within my app
 const cors = require('cors');
 app.use(cors());
+const { check, validationResult } = require('express-validator'); //for validating user input//
 
 const passport = require('passport');
 require('./passport'); //import the passport.js file//
@@ -37,7 +38,27 @@ let auth = require('./auth')(app); //import the auth.js file for login authentic
 //load documentation page
 app.use(express.static("public"));
 
-app.post('/users', async (req, res) => {
+app.post('/users', 
+  [
+  // Validation logic here
+   //you can either use a chain of methods like .not().isEmpty()
+  //which means "opposite of isEmpty" in plain english "is not empty"
+  //or use .isLength({min: 5}) which means
+  //minimum value of 5 characters are only allowed
+  check("UserName", "UserName is required").isLength({ min: 5 }),
+  check(
+    "UserName",
+    "UserName contains non alphanumeric characters - not allowed."
+  ).isAlphanumeric(),
+  check('Password', 'Password is required').not().isEmpty(),
+  check("Email", "Email does not appear to be valid").isEmail(),
+],
+async (req, res) => {
+  let errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
 let hashedPassword = Users.hashPassword(req.body.Password);
 await Users.findOne({ Username: req.body.Username }) //search to see if a user with the requested username already exists 
 .then((user) => {
@@ -260,51 +281,114 @@ app.get('/users', (req, res) => {
   Email: String,
   Birthday: Date
 }*/
-app.post('/users', async (req, res) => {
-  await Users.findOne({ Username: req.body.Username })
-    .then((user) => {
-      if (user) {
-        return res.status(400).send(req.body.Username + 'already exists');
-      } else {
-        Users
-          .create({
-            Username: req.body.Username,
-            Password: req.body.Password,
-            Email: req.body.Email,
-            Birthday: req.body.Birthday
-          })
-          .then((user) =>{res.status(201).json(user) })
-        .catch((error) => {
-          console.error(error);
-          res.status(500).send('Error: ' + error);
-        })
+
+app.post('/users', async (req, res) => 
+  [
+  // Validation logic here
+  check("UserName", "UserName is required").isLength({ min: 5 }),
+  check(
+    "UserName",
+    "UserName contains non alphanumeric characters - not allowed."
+  ).isAlphanumeric(),
+  check("Email", "Email does not appear to be valid").isEmail(),
+],
+async (req, res) => {
+  let errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+let hashedPassword = Users.hashPassword(req.body.Password);
+await Users.findOne({ Username: req.body.Username }) //search to see if a user with the requested username already exists 
+.then((user) => {
+if (user) {
+  //if the user is found, send a response that it already exists
+  return res.status(400).send(req.body.Username + 'already exists');
+} else {
+  Users
+  .create({
+    Username: req.body.Username,
+    Password: hashedPassword,
+    Email: req.body.Email,
+    Birthday: req.body.Birthday
+  })
+  .then((user) =>{res.status(201).json(user) })
+  .catch((error) => {
+    console.error(error);
+    res.status(500).send('Error: ' + error);
+  });
+}
+})
+  .catch((error) => {
+  console.error(error);
+  res.status(500).send('Error: ' + error);
+  });
+});
+
+// UPDATE user data by username
+app.put('/users/:username', (req, res) => {
+  [
+    check("UserName", "UserName is required").isLength({ min: 5 }),
+    check(
+      "UserName",
+      "UserName contains non alphanumeric characters - not allowed."
+    ).isAlphanumeric(),
+    check("Email", "Email does not appear to be valid").isEmail(),
+  ],
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    if (req.user.UserName !== req.params.username) {
+      return res.status(400).send("Permission denied");
+    }
+
+ const updatedUser = {
+      UserName: req.body.UserName,
+      Email: req.body.Email,
+      Birthdate: req.body.Birthdate,
+    }
+  
+    if (req.body.Password) {
+      updatedUser.Password = Users.hashPassword(req.body.Password);
+    }
+
+    await Users.findOneAndUpdate(
+      { UserName: req.params.username },
+      { $set: updatedUser },
+      { new: true }
+    )
+      .then((updatedUser) => {
+        res.json(updatedUser);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+      });
+  };
+
+// Add new favorite movie for user
+app.post('/users/:username/movies/:movieTitle',
+passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    await Movies.findOne({Title: req.params.movieTitle})
+    .then( async (movie) => {
+      if (!movie) {
+        return res.status(404).json({error: "Movie not found"});
       }
+      await Users.findOneAndUpdate(
+        { UserName: req.params.username },
+        { $push: { FavoriteMovies: req.params.movieTitle } },
+        { new: true }
+      )
+      .then((updatedUser) => {
+        res.json(updatedUser);
+      })
     })
     .catch((error) => {
       console.error(error);
-      res.status(500).send('Error: ' + error);
+      res.status(500).send("Error: " + error);
     });
-});
-
-// UPDATE user information
-app.put('/users/:username', (req, res) => {
-  const updatedUser = req.body;
-
-
-  let user = users.find( user => user.Username == Username );
-
-  if (user) {
-      user.name = updatedUser.name;
-      res.status(200).json(user);
-  } else {
-      res.status(400).send('No such user.')
-  }
-});
-
-// Add new favorite movie for user
-app.post('/users/:username/movies/:movieTitle', (req, res) => {
-  const { username, movieTitle } = req.params;
-  res.status(200).send('Movie ' + movieTitle + ' has been added to user ' + username + '\'s favorite list.');
+  });
+  // old code: res.status(200).send('Movie ' + movieTitle + ' has been added to user ' + username + '\'s favorite list.');
 });
 
 // DELETE favorite movie for user
@@ -427,9 +511,7 @@ app.use((err,req,res,next) => {
     });
 
 // Start the Express server on a specific port (8081)
-const port = 8081;
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+const port = process.env.PORT || 8081;
+app.listen(port, '0.0.0.0'  ,() => {
+  console.log('Listening on Port ' + port);
 });
-
-
