@@ -1,5 +1,0 @@
-{"_id":{"$oid":"658e4506ca2edb72552989db"},"Username":"LillyB","Password":"freebow098","Email":"lillyb@email.com","Birthday":{"$date":"1995-06-13"},"FavoriteMovies":[{"$oid":"658e27ebca2edb72552989d6"},{"$oid":"658e07d8ca2edb72552989d3"}]}
-{"_id":{"$oid":"658e4606ca2edb72552989dc"},"Username":"BillieForest","Password":"jellybean23","Email":"billiebf@email.com","Birthday":{"$date":"1991-12-17"},"FavoriteMovies":{"$oid":"658dfc18ca2edb72552989d0"}}
-{"_id":{"$oid":"658e4711ca2edb72552989dd"},"Username":"MadsaboutU","Password":"borninmilwaukee89","Email":"maddierue@email.com","Birthday":{"$date":"1989-04-15"},"FavoriteMovies":{"$oid":"658e0542ca2edb72552989d1"}}
-{"_id":{"$oid":"658e47deca2edb72552989de"},"Username":"Romanofwar","Password":"strength29aaa","Email":"romanfusa24@email.com","Birthday":{"$date":"1994-01-07"},"FavoriteMovies":{"$oid":"658e06bcca2edb72552989d2"}}
-{"_id":{"$oid":"658e48a2ca2edb72552989df"},"Username":"MitchWS","Password":"ila2023","Email":"mws1993@email.com","Birthday":{"$date":"1993-09-03"},"FavoriteMovies":{"$oid":"658e402cca2edb72552989d9"}}
