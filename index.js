@@ -10,7 +10,7 @@ const mongoose = require('mongoose'); //Mongoose to interact with MongoDB//
 console.log('Connecting to MongoDB database using URI:', 'mongodb://localhost:27017/mongodb');
 const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/mongodb';
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true }); //mongoDB Atlas connection
+//mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true }); //mongoDB Atlas connection
 //mongoose.connect('mongodb://localhost:27017/mongodb'); //{ useNewUrlParser: true, useUnifiedTopology: true }); //local connection
 
 const Schema = mongoose.Schema; //Mongoose schema for defining the structure of the data//
