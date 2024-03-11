@@ -1,0 +1,157 @@
+{
+    "movies": [
+    {
+        "_id": { "$oid": "658e0542ca2edb72552989d1" },
+        "Title": "How to Lose a Guy in 10 Days",
+        "Description": "An advice columnist tries pushing the boundaries of what she can write about in her new piece about how to get a man to leave you in 10 days, but her plan backfires as she falls for the guy she tries to bring down.",
+        "Genre": {
+            "Name": "Romantic Comedy",
+            "Description": "A subgenre of comedy and romance films that focuses on two people falling in love amidst comical circumstances."
+        },
+        "Director": {
+            "Name": "Donald Petrie",
+            "Bio": "Donald Mark Petrie is an American actor, director, and screenwriter.",
+            "Birth": "1954"
+        },
+        "Featured": true,
+        "Actors": ["Kate Hudson"]
+    },
+    {
+        "_id": { "$oid": "658e06bcca2edb72552989d2" },
+        "Title": "Seven",
+        "Description": "Set in an unnamed, crime-ridden city, Seven's narrative follows disenchanted, near-retirement detective William Somerset and his newly transferred partner David Mills as they endeavor to thwart a serial killer from executing a series of murders based on the seven deadly sins.",
+        "Genre": {
+            "Name": "Mystery",
+            "Description": "A mystery film is a genre of film that revolves around the solution of a problem or a crime."
+        },
+        "Director": {
+            "Name": "David Fincher",
+            "Bio": "David Fincher is an American film director. Known for his psychological thrillers, his films have received 40 nominations at the Academy Awards, including three for him as Best Director.",
+            "Birth": "1962"
+        },
+        "Featured": true
+    },
+    {
+        "_id": { "$oid": "658e07d8ca2edb72552989d3" },
+        "Title": "Romy and Michele's High School Reunion",
+        "Description": "Two dim-witted, inseparable friends hit the road for their ten-year high school reunion and concoct an elaborate lie about their lives in order to impress their classmates.",
+        "Genre": {
+            "Name": "Comedy",
+            "Description": "Comedy is a genre of fiction that consists of discourses or works intended to be humorous or amusing by inducing laughter."
+        },
+        "Director": {
+            "Name": "David Mirkin",
+            "Bio": "David Mirkin is an American film and television director, writer and producer. Mirkin grew up in Philadelphia and intended to become an electrical engineer, but abandoned this career path in favor of studying film at Loyola Marymount University.",
+            "Birth": "1955"
+        },
+        "Featured": true
+    },
+    {
+        "_id": { "$oid": "658e08a5ca2edb72552989d4" },
+        "Title": "The Witch",
+        "Description": "The Witch is a chilling portrait of a family unraveling within their own sins, leaving them prey for an inconceivable evil.",
+        "Genre": {
+            "Name": "Horror",
+            "Description": "Horror is a genre that is meant to scare, startle, shock, and even repulse audiences."
+        },
+        "Director": {
+            "Name": "Robert Eggers",
+            "Bio": "Robert Eggers is an American film director, screenwriter, and production designer. He is best known for his critically acclaimed horror films The Witch and The Lighthouse.",
+            "Birth": "1983"
+        },
+        "Featured": true
+    },
+    {
+        "_id": { "$oid": "658e2491ca2edb72552989d5" },
+        "Title": "The Dark Knight",
+        "Description": "The plot follows the vigilante Batman, police lieutenant James Gordon, and district attorney Harvey Dent, who form an alliance to dismantle organized crime in Gotham City, whose efforts are derailed by the Joker.",
+        "Director": {
+            "Name": "Christopher Nolan",
+            "Bio": "Christopher Edward Nolan is a British-American film director, producer, and screenwriter. His directorial efforts have grossed more than $5 billion worldwide, garnered 36 Oscar nominations and ten wins.",
+            "Birth": "1970"
+        },
+        "Genre": {
+            "Name": "Action",
+            "Description": "Action is a film genre in which the protagonist is thrust into a series of events that typically involve violence and physical feats."
+        },
+        "Featured": true
+    },
+    {
+        "_id": { "$oid": "658e27ebca2edb72552989d6" },
+        "Title": "The Lord of the Rings: The Fellowship of the Ring",
+        "Description": "Set in Middle-earth, the story tells of the Dark Lord Sauron, who seeks the One Ring, which contains part of his might, to return to power.",
+        "Genre": {
+            "Name": "Fantasy",
+            "Description": "Fantasy is a genre of speculative fiction set in a fictional universe, often inspired by real-world myth and folklore."
+        },
+        "Director": {
+            "Name": "Peter Jackson",
+            "Bio": "Sir Peter Robert Jackson is a New Zealand film director, producer, and screenwriter. He is best known as the director, writer, and producer of the Lord of the Rings trilogy and the Hobbit trilogy.",
+            "Birth": "1961"
+        },
+        "Featured": true
+    },
+    {
+        "_id": { "$oid": "658e3d5aca2edb72552989d7" },
+        "Title": "Killers of the Flower Moon",
+        "Description": "Killers of the Flower Moon is a 2021 American crime drama film based on the 2017 non-fiction book of the same name by David Grann.",
+        "Genre": {
+            "Name": "Drama",
+            "Description": "Drama is a genre of narrative fiction (or semi-fiction) intended to be more serious than humorous in tone, focusing on in-depth development of realistic characters who must deal with realistic emotional struggles."
+        },
+        "Director": {
+            "Name": "Martin Scorsese",
+            "Bio": "Martin Scorsese is an American film director, producer, screenwriter, and actor. One of the major figures of the New Hollywood era, he is widely regarded as one of the most significant and influential directors in film history.",
+            "Birth": "1942"
+        },
+        "Featured": true
+    },
+    {
+        "_id": { "$oid": "658e3e90ca2edb72552989d8" },
+        "Title": "Jurassic Park",
+        "Description": "A pragmatic paleontologist visiting an almost complete theme park is tasked with protecting a couple of kids after a power failure causes the park's cloned dinosaurs to run loose.",
+        "Genre": {
+            "Name": "Science Fiction",
+            "Description": "Science Fiction in a genre of speculative fiction that typically deals with imaginative and futuristic concepts."
+        },
+        "Director": {
+            "Name": "Steven Spielberg",
+            "Bio": "Steven Spielberg is an American film director, producer, and screenwriter. He is considered one of the founding pioneers of the New Hollywood era and one of the most popular directors in film history.",
+            "Birth": "1946"
+        },
+        "Featured": false
+    },
+    {
+        "_id":{"$oid":"658e402cca2edb72552989d9"},
+        "Title":"Pulp Fiction",
+        "Description":"The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.",
+        "Genre":{
+            "Name":"Crime",
+            "Description":"Crime films, in the broadest sense, are a cinematic genre inspired by and analogous to the crime fiction literary genre."
+        },
+        "Director":{
+            "Name":"Quentin Tarantino",
+            "Bio":"Quentin Tarantino is an American film director, screenwriter, producer, and actor. His films are characterized by nonlinear storylines, dark humor, aestheticization of violence, extended scenes of dialogue, ensemble casts, references to popular culture and a wide variety of other films, eclectic soundtracks primarily containing songs and score pieces from the 1960s to the 1980s, alternate history, and features of neo-noir film.",
+            "Birth":"1963"
+        },
+        "Featured":false
+    },
+    {
+        "_id":{"$oid":"658e4110ca2edb72552989da"},
+        "Title":"The Wolf of Wall Street",
+        "Description":"Based on the true story of Jordan Belfort, from his rise to a wealthy stock-broker living the high life to his fall involving crime, corruption and the federal government.",
+        "Genre":{
+            "Name":"Crime",
+            "Description":"Crime films, in the broadest sense, are a cinematic genre inspired by and analogous to the crime fiction literary genre."
+        },
+        "Director":{
+            "Name":"Martin Scorsese",
+            "Bio":"Martin Scorsese is an American film director, producer, screenwriter, and actor. One of the major figures of the New Hollywood era, he is widely regarded as one of the most significant and influential directors in film history.",
+            "Birth":"1942"
+        },
+        "Featured":false
+    }
+    ]
+}
+
+
