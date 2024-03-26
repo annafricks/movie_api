@@ -48,7 +48,13 @@ app.post('/users',
   // Validation logic here
    //you can either use a chain of methods like .not().isEmpty()
   //which means "opposite of isEmpty" in plain english "is not empty"
-  check("UserName", "UserName is required"),
+  //or use .isLength({min: 5}) which means
+  //minimum value of 5 characters are only allowed
+  check("Username", "Username is required").isLength({ min: 5 }),
+  check(
+    "Username",
+    "Username contains non alphanumeric characters - not allowed."
+  ).isAlphanumeric(),
   check('Password', 'Password is required').not().isEmpty(),
   check("Email", "Email does not appear to be valid").isEmail(),
 ],
@@ -59,15 +65,15 @@ async (req, res) => {
     return res.status(422).json({ errors: errors.array() });
   }
 let hashedPassword = Users.hashPassword(req.body.Password);
-await Users.findOne({ UserName: req.body.UserName }) //search to see if a user with the requested username already exists 
+await Users.findOne({ Username: req.body.Username }) //search to see if a user with the requested username already exists 
 .then((user) => {
 if (user) {
   //if the user is found, send a response that it already exists
-  return res.status(400).send(req.body.UserName + 'already exists');
+  return res.status(400).send(req.body.Username + 'already exists');
 } else {
   Users
   .create({
-    UserName: req.body.UserName,
+    Username: req.body.Username,
     Password: hashedPassword,
     Email: req.body.Email,
     Birthday: req.body.Birthday
