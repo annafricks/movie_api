@@ -50,11 +50,9 @@ app.post('/users',
   //which means "opposite of isEmpty" in plain english "is not empty"
   //or use .isLength({min: 5}) which means
   //minimum value of 5 characters are only allowed
-  check("UserName", "UserName is required").isLength({ min: 5 }),
+  check("UserName", "UserName is required"),
   check(
-    "UserName",
-    "UserName contains non alphanumeric characters - not allowed."
-  ).isAlphanumeric(),
+    "UserName"),
   check('Password', 'Password is required').not().isEmpty(),
   check("Email", "Email does not appear to be valid").isEmail(),
 ],
