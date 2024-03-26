@@ -63,15 +63,15 @@ async (req, res) => {
     return res.status(422).json({ errors: errors.array() });
   }
 let hashedPassword = Users.hashPassword(req.body.Password);
-await Users.findOne({ Username: req.body.Username }) //search to see if a user with the requested username already exists 
+await Users.findOne({ UserName: req.body.UserName }) //search to see if a user with the requested username already exists 
 .then((user) => {
 if (user) {
   //if the user is found, send a response that it already exists
-  return res.status(400).send(req.body.Username + 'already exists');
+  return res.status(400).send(req.body.UserName + 'already exists');
 } else {
   Users
   .create({
-    Username: req.body.Username,
+    UserName: req.body.UserName,
     Password: hashedPassword,
     Email: req.body.Email,
     Birthday: req.body.Birthday
