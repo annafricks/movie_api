@@ -48,11 +48,7 @@ app.post('/users',
   // Validation logic here
    //you can either use a chain of methods like .not().isEmpty()
   //which means "opposite of isEmpty" in plain english "is not empty"
-  //or use .isLength({min: 5}) which means
-  //minimum value of 5 characters are only allowed
   check("UserName", "UserName is required"),
-  check(
-    "UserName"),
   check('Password', 'Password is required').not().isEmpty(),
   check("Email", "Email does not appear to be valid").isEmail(),
 ],
