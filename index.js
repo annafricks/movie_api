@@ -94,7 +94,7 @@ if (user) {
   });
 });
 
-// Top RomCom movies
+// Top movies
 let movies = [
   {
     "Title":"How to Lose a Guy in 10 Days",
