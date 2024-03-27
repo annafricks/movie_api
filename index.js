@@ -8,7 +8,7 @@ const uuid = require('uuid'); //for generating unique identifiers//
 //added mongoose and connected database
 const mongoose = require('mongoose'); //Mongoose to interact with MongoDB//
 console.log('Connecting to MongoDB database using URI:', 'mongodb://localhost:27017/mongodb');
-const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/mongodb';
+const mongoURI = process.env.CONNECTION_URI || 'mongodb://localhost:27017/mongodb';
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => console.log('Connected to MongoDB database'))
 .catch(err => console.error('Error connecting to MongoDB database', err));
@@ -66,7 +66,7 @@ async (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() });
   }
-let hashedPassword = Users.hashPassword(req.body.Password);
+  let hashedPassword = Users.hashPassword(req.body.Password);
 await Users.findOne({ Username: req.body.Username }) //search to see if a user with the requested username already exists 
 .then((user) => {
 if (user) {
